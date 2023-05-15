@@ -5,7 +5,7 @@ export default class Meter extends BaseModel {
   @column({ isPrimary: true })
   public serialNumber: number
 
-  @column.dateTime({ autoCreate: true })
+  @column.dateTime()
   public installationDate: DateTime
 
   @column.dateTime({ autoCreate: true })

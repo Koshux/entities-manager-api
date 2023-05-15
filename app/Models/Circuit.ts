@@ -5,7 +5,7 @@ export default class Circuit extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
-  @column.dateTime({ autoCreate: true })
+  @column.dateTime()
   public installationDate: DateTime
 
   @column()
