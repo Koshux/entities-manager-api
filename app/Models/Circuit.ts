@@ -1,5 +1,6 @@
 import { DateTime } from 'luxon'
-import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import Meter from './Meter'
 
 export default class Circuit extends BaseModel {
   @column({ isPrimary: true })
@@ -16,4 +17,7 @@ export default class Circuit extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+
+  @belongsTo(() => Meter)
+  public circuit: BelongsTo<typeof Meter>
 }

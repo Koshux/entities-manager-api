@@ -6,6 +6,15 @@ export default class Sites extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
+      table
+        .integer('customer_id')
+        .unsigned()
+        .references('id')
+        .inTable('customers')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE')
+        .notNullable()
+
       table.string('coordinates').notNullable()
       table.string('address').notNullable()
       table.string('post_code').notNullable()
