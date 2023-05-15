@@ -4,6 +4,11 @@ export default class Sites extends BaseSchema {
   protected tableName = 'sites'
 
   public async up () {
+    // if (await this.schema.hasTable(this.tableName)) {
+    //   return
+    // }
+    this.schema.dropTable(this.tableName)
+
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table
