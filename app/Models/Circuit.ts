@@ -19,10 +19,10 @@ export default class Circuit extends BaseModel {
   public updatedAt: DateTime
 
   @column()
-  public meterId: number
+  public serialNumber: number
 
   @belongsTo(() => Meter, {
-    foreignKey: 'meterId',
+    foreignKey: 'serialNumber',
   })
   public circuit: BelongsTo<typeof Meter>
 }

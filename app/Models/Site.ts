@@ -26,7 +26,7 @@ export default class Site extends BaseModel {
   public customerId: number
 
   @hasMany(() => Meter, {
-    foreignKey: 'meterId',
+    foreignKey: 'serialNumber',
   })
   public meters: HasMany<typeof Meter>
 

@@ -5,7 +5,7 @@ import Site from './Site'
 
 export default class Meter extends BaseModel {
   @column({ isPrimary: true })
-  public meterId: number
+  public serialNumber: string
 
   @column.dateTime()
   public installationDate: DateTime
