@@ -18,6 +18,11 @@ export default class Circuit extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @belongsTo(() => Meter)
+  @column()
+  public meterId: number
+
+  @belongsTo(() => Meter, {
+    foreignKey: 'meterId',
+  })
   public circuit: BelongsTo<typeof Meter>
 }

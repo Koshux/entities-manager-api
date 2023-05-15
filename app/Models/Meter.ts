@@ -5,7 +5,7 @@ import Site from './Site'
 
 export default class Meter extends BaseModel {
   @column({ isPrimary: true })
-  public serialNumber: number
+  public meterId: number
 
   @column.dateTime()
   public installationDate: DateTime
@@ -16,9 +16,14 @@ export default class Meter extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
+  @column()
+  public siteId: number
+
   @hasMany(() => Circuit)
   public circuits: HasMany<typeof Circuit>
 
-  @belongsTo(() => Site)
+  @belongsTo(() => Site, {
+    foreignKey: 'siteId',
+  })
   public meter: BelongsTo<typeof Site>
 }

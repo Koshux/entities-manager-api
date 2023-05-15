@@ -8,7 +8,17 @@ export default class ProfileController {
   }
 
   public async show({ }: HttpContextContract) {
-    return Customer.findOrFail(1)
+    // return Customer.findOrFail(1)
+
+    // TODO: test pre-load all relations.
+    return Customer.query()
+      .preload('sites', (query) => {
+        query.preload('meters', (meterQuery) => {
+          meterQuery.preload('circuits')
+        })
+      })
+      .firstOrFail()
+
   }
 
   public async store({ request, response }: HttpContextContract) {

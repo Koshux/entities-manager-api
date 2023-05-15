@@ -12,7 +12,7 @@ export default class Circuits extends BaseSchema {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table
-        .integer('meter_id')
+        .integer('serialNumber')
         .unsigned()
         .references('serial_number')
         .inTable('meters')
