@@ -6,6 +6,12 @@ export default class Circuit extends BaseModel {
   public id: number
 
   @column.dateTime({ autoCreate: true })
+  public installationDate: DateTime
+
+  @column()
+  public isMain: Boolean
+
+  @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })

@@ -5,6 +5,15 @@ export default class Site extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
+  @column()
+  public coordinates: string
+
+  @column()
+  public address: string
+
+  @column()
+  public postCode: string
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 
