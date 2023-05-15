@@ -1,3 +1,24 @@
-// import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class CircuitsController {}
+export default class CircuitsController {
+  public async index({ }: HttpContextContract) {
+    // I would like to return all Profiles
+    return { hello: 'CircuitsController' }
+  }
+
+  public async show({ }: HttpContextContract) {
+    // I would like to return a Profile by id
+  }
+
+  public async store({ }: HttpContextContract) {
+    // I would like to create a Profile
+  }
+
+  public async update({ }: HttpContextContract) {
+    // I would like to update a Profile by id
+  }
+
+  public async destroy({ }: HttpContextContract) {
+    // I would like to delete a Profile by id
+  }
+}
