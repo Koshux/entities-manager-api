@@ -1,4 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Site from 'App/Models/Site'
 
 export default class SitesController {
@@ -12,65 +13,46 @@ export default class SitesController {
   }
 
   public async store({ request, response }: HttpContextContract) {
-    const body = request.body()
+    const siteSchema = schema.create({
+      coordinates: schema.string({ trim: true }),
+      address: schema.string({ trim: true }),
+      postCode: schema.string({ trim: true })
+    })
 
-    if (!body.coordinates) {
-      return response
-        .status(400)
-        .json({ error: 'coordinates is required' })
-    }
-
-    if (!body.address) {
-      return response
-        .status(400)
-        .json({ error: 'address is required' })
-    }
-
-    if (!body.postCode) {
-      return response
-        .status(400)
-        .json({ error: 'postCode is required' })
-    }
-
-    const site: Site = await Site.create(body)
+    const payload = await request.validate({ schema: siteSchema })
+    const site: Site = await Site.create(payload)
 
     return response
       .status(201)
       .json(site)
   }
 
-  public async update({ params, request, response }: HttpContextContract) {
-    if (!params.id) {
-      return response
-        .status(400)
-        .json({ error: 'id is required' })
-    }
+  public async update({ request }: HttpContextContract) {
+    const sitesSchema = schema.create({
+      id: schema.number(),
+      coordinates: schema.string({ trim: true }),
+      address: schema.string({ trim: true }, [
+        rules.unique({ table: 'sites', column: 'address' })
+      ]),
+      postCode: schema.string({ trim: true })
+    })
 
-    const body = request.body()
-    const site: Site = await Site.findOrFail(params.id)
+    const payload = await request.validate({ schema: sitesSchema })
+    const circuit: Site = await Site.findOrFail(payload.id)
 
-    if (body.coordinates) {
-      site.coordinates = body.coordinates
-    }
-
-    if (body.address) {
-      site.address = body.address
-    }
-
-    return site
-      .merge(body)
+    return circuit
+      .merge(payload)
       .save()
   }
 
-  public async destroy({ params, response }: HttpContextContract) {
-    if (!params.id) {
-      return response
-        .status(400)
-        .json({ error: 'id is required' })
-    }
+  public async destroy({ request }: HttpContextContract) {
+    const sitesSchema = schema.create({
+      id: schema.number()
+    })
 
-    const site: Site = await Site.findOrFail(params.id)
+    const payload = await request.validate({ schema: sitesSchema })
+    const meter: Site = await Site.findOrFail(payload.id)
 
-    return site.delete()
+    return meter.delete()
   }
 }

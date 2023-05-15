@@ -1,4 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { schema } from '@ioc:Adonis/Core/Validator'
 import Meter from 'App/Models/Meter'
 
 export default class MetersController {
@@ -12,48 +13,39 @@ export default class MetersController {
   }
 
   public async store({ request, response }: HttpContextContract) {
-    const body = request.body()
+    const meterSchema = schema.create({
+      installationDate: schema.date({ format: 'yyyy-MM-dd' }),
+    })
 
-    if (!body.installationDate) {
-      return response
-        .status(400)
-        .json({ error: 'installationDate is required' })
-    }
-
-    const meter: Meter = await Meter.create(body)
+    const payload = await request.validate({ schema: meterSchema })
+    const meter: Meter = await Meter.create(payload)
 
     return response
       .status(201)
       .json(meter)
   }
 
-  public async update({ params, request, response }: HttpContextContract) {
-    if (!params.id) {
-      return response
-        .status(400)
-        .json({ error: 'id is required' })
-    }
+  public async update({ request }: HttpContextContract) {
+    const metersSchema = schema.create({
+      serialNumber: schema.string({ trim: true }),
+      installationDate: schema.date({ format: 'yyyy-MM-dd' }),
+    })
 
-    const body  = request.body()
-    const meter: Meter = await Meter.findOrFail(params.id)
+    const payload = await request.validate({ schema: metersSchema })
+    const circuit: Meter = await Meter.findOrFail(payload.serialNumber)
 
-    if (body.installationDate) {
-      meter.installationDate = body.installationDate
-    }
-
-    return meter
-      .merge(body)
+    return circuit
+      .merge(payload)
       .save()
   }
 
-  public async destroy({ params, response }: HttpContextContract) {
-    if (!params.id) {
-      return response
-        .status(400)
-        .json({ error: 'id is required' })
-    }
+  public async destroy({ request }: HttpContextContract) {
+    const metersSchema = schema.create({
+      serialNumber: schema.string({ trim: true })
+    })
 
-    const meter: Meter = await Meter.findOrFail(params.id)
+    const payload = await request.validate({ schema: metersSchema })
+    const meter: Meter = await Meter.findOrFail(payload.serialNumber)
 
     return meter.delete()
   }

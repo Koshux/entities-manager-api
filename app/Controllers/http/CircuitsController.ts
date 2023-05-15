@@ -1,4 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { schema } from '@ioc:Adonis/Core/Validator'
 import Circuit from 'App/Models/Circuit'
 
 export default class CircuitsController {
@@ -12,58 +13,42 @@ export default class CircuitsController {
   }
 
   public async store({ request, response }: HttpContextContract) {
-    const body = request.body()
+    const circuitSchema = schema.create({
+      installationDate: schema.date({ format: 'yyyy-MM-dd' }),
+      isMain: schema.boolean()
+    })
 
-    if (!body.installationDate) {
-      return response
-        .status(400)
-        .json({ error: 'installationDate is required' })
-    }
-
-    if (body.isMain == null || body.isMain == '') {
-      return response
-        .status(400)
-        .json({ error: 'isMain is required' })
-    }
-
-    const circuit: Circuit = await Circuit.create(body)
+    const payload = await request.validate({ schema: circuitSchema })
+    const circuit: Circuit = await Circuit.create(payload)
 
     return response
       .status(201)
       .json(circuit)
   }
 
-  public async update({ params, request, response }: HttpContextContract) {
-    if (!params.id) {
-      return response
-        .status(400)
-        .json({ error: 'id is required' })
-    }
+  public async update({ request }: HttpContextContract) {
+    const circuitSchema = schema.create({
+      id: schema.number(),
+      installationDate: schema.date({ format: 'yyyy-MM-dd' }),
+      isMain: schema.boolean()
+    })
 
-    const body  = request.body()
-    const circuit: Circuit = await Circuit.findOrFail(params.id)
-
-    if (body.installationDate) {
-      circuit.installationDate = body.installationDate
-    }
-
-    if (body.isMain != null && body.isMain != '') {
-      circuit.isMain = body.isMain
-    }
+    const payload = await request.validate({ schema: circuitSchema })
+    const circuit: Circuit = await Circuit.findOrFail(payload.id)
 
     return circuit
-      .merge(body)
+      .merge(payload)
       .save()
   }
 
-  public async destroy({ params, response }: HttpContextContract) {
-    if (!params.id) {
-      return response
-        .status(400)
-        .json({ error: 'id is required' })
-    }
+  public async destroy({ request }: HttpContextContract) {
+    const circuitsSchema = schema.create({
+      id: schema.number()
+    })
 
-    const circuit: Circuit = await Circuit.findOrFail(params.id)
-    return circuit.delete()
+    const payload = await request.validate({ schema: circuitsSchema })
+    const meter: Circuit = await Circuit.findOrFail(payload.id)
+
+    return meter.delete()
   }
 }

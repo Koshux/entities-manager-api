@@ -1,4 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Customer from 'App/Models/Customer'
 
 export default class ProfileController {
@@ -21,58 +22,50 @@ export default class ProfileController {
   }
 
   public async store({ request, response }: HttpContextContract) {
-    const body = request.body()
+    const customerSchema = schema.create({
+      email: schema.string({ trim: true }, [
+        rules.email()
+      ]),
+      vatNumber: schema.string({ trim: true }, [
+        rules.unique({ table: 'customers', column: 'vat_number' })
+      ])
+    })
 
-    if (!body.email) {
-      return response
-        .status(400)
-        .json({ error: 'email is required' })
-    }
-
-    if (!body.vatNumber) {
-      return response
-        .status(400)
-        .json({ error: 'vatNumber is required' })
-    }
-
-    const customer: Customer = await Customer.create(body)
+    const payload = await request.validate({ schema: customerSchema })
+    const customer: Customer = await Customer.create(payload)
 
     return response
       .status(201)
       .json(customer)
   }
 
-  public async update({ params, request, response }: HttpContextContract) {
-    if (!params.id) {
-      return response
-        .status(400)
-        .json({ error: 'id is required' })
-    }
+  public async update({ request }: HttpContextContract) {
+    const customerSchema = schema.create({
+      id: schema.number(),
+      email: schema.string({ trim: true }, [
+        rules.email()
+      ]),
+      vatNumber: schema.string({ trim: true }, [
+        rules.unique({ table: 'customers', column: 'vat_number' })
+      ])
+    })
 
-    const body = request.body()
-    const customer: Customer = await Customer.findOrFail(params.id)
+    const payload = await request.validate({ schema: customerSchema })
+    const circuit: Customer = await Customer.findOrFail(payload.id)
 
-    if (body.email) {
-      customer.email = body.email
-    }
-
-    if (body.vatNumber) {
-      customer.vatNumber = body.vatNumber
-    }
-
-    return customer
-      .merge(body)
+    return circuit
+      .merge(payload)
       .save()
   }
 
-  public async destroy({ params, response }: HttpContextContract) {
-    if (!params.id) {
-      return response
-        .status(400)
-        .json({ error: 'id is required' })
-    }
+  public async destroy({ request }: HttpContextContract) {
+    const customerSchema = schema.create({
+      id: schema.number()
+    })
 
-    const customer: Customer = await Customer.findOrFail(params.id)
-    return customer.delete()
+    const payload = await request.validate({ schema: customerSchema })
+    const meter: Customer = await Customer.findOrFail(payload.id)
+
+    return meter.delete()
   }
 }
