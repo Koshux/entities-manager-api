@@ -6,7 +6,7 @@ export class Circuits extends BaseSchema {
   public async up () {
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
-      table.dateTime('installation_date').notNullable()
+      table.timestamp('installation_date').notNullable()
       table.boolean('is_main').notNullable()
 
       /**
