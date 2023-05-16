@@ -1,5 +1,0 @@
-{
-  "commands": {
-    "migration:run": "node database/setup.js && node ace migration:run"
-  }
-}
