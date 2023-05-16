@@ -14,6 +14,10 @@ DONE - Define Controllers to implement the business logic for the routes
 DONE - Define routes for entire schema
 	- GET, POST, PATCH, DELETE on all models
 TODO:
+- Fix seeder inserts
+- Add missing relationships:
+	- site to circuit
+	- circuit to circuit
 - Implement basic auth
 	- register (POST /customers)
 	- login (GET /customers/:id)
