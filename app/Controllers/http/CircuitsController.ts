@@ -5,25 +5,23 @@ import Circuit from 'App/Models/Circuit'
 export default class CircuitsController {
   public async index({ }: HttpContextContract) {
     // I would like to return all Profiles
-    return Circuit.all()
+    return await Circuit.all()
   }
 
   public async show({ }: HttpContextContract) {
-    return Circuit.findOrFail(1)
+    return await Circuit.findOrFail(1)
   }
 
   public async store({ request, response }: HttpContextContract) {
     const circuitSchema = schema.create({
-      installationDate: schema.date({ format: 'yyyy-MM-dd' }, [
-        rules.unique({ table: 'circuits', column: 'installation_date' })
-      ]),
+      installationDate: schema.date({ format: 'yyyy-MM-dd' }),
       isMain: schema.boolean()
     })
 
     const payload = await request.validate({ schema: circuitSchema })
     const circuit: Circuit = await Circuit.create(payload)
 
-    return response
+    return await response
       .status(201)
       .json(circuit)
   }
@@ -40,7 +38,7 @@ export default class CircuitsController {
     const payload = await request.validate({ schema: circuitSchema })
     const circuit: Circuit = await Circuit.findOrFail(payload.id)
 
-    return circuit
+    return await circuit
       .merge(payload)
       .save()
   }
@@ -53,6 +51,6 @@ export default class CircuitsController {
     const payload = await request.validate({ schema: circuitsSchema })
     const meter: Circuit = await Circuit.findOrFail(payload.id)
 
-    return meter.delete()
+    return await meter.delete()
   }
 }

@@ -19,7 +19,7 @@ export default class Customer extends BaseModel {
   public updatedAt: DateTime
 
   @hasMany(() => Site, {
-    foreignKey: 'customerId',
+    localKey: 'customerId',
   })
   public sites: HasMany<typeof Site>
 }

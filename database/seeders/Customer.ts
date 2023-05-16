@@ -3,6 +3,7 @@ import Customer from 'App/Models/Customer'
 
 export default class extends BaseSeeder {
   public async run () {
+    await Customer.truncate()
     await Customer.createMany([{
       email: 'test@test.com',
       vatNumber: '123456789',

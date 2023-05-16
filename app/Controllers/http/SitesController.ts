@@ -3,13 +3,15 @@ import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Site from 'App/Models/Site'
 
 export default class SitesController {
-  public async index({ }: HttpContextContract) {
+  public async index({ response }: HttpContextContract) {
     // I would like to return all Profiles
-    return Site.all()
+    const all = await Site.all()
+    console.log('all sites:', all)
+    return response.json(all)
   }
 
   public async show({ }: HttpContextContract) {
-    return Site.findOrFail(1)
+    return await Site.findOrFail(1)
   }
 
   public async store({ request, response }: HttpContextContract) {
@@ -22,7 +24,7 @@ export default class SitesController {
     const payload = await request.validate({ schema: siteSchema })
     const site: Site = await Site.create(payload)
 
-    return response
+    return await response
       .status(201)
       .json(site)
   }
@@ -40,7 +42,7 @@ export default class SitesController {
     const payload = await request.validate({ schema: sitesSchema })
     const circuit: Site = await Site.findOrFail(payload.id)
 
-    return circuit
+    return await circuit
       .merge(payload)
       .save()
   }
@@ -53,6 +55,6 @@ export default class SitesController {
     const payload = await request.validate({ schema: sitesSchema })
     const meter: Site = await Site.findOrFail(payload.id)
 
-    return meter.delete()
+    return await meter.delete()
   }
 }

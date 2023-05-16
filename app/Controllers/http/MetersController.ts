@@ -5,24 +5,25 @@ import Meter from 'App/Models/Meter'
 export default class MetersController {
   public async index({ }: HttpContextContract) {
     // I would like to return all Profiles
-    return Meter.all()
+    return await Meter.all()
   }
 
   public async show({ }: HttpContextContract) {
-    return Meter.findOrFail(1)
+    return await Meter.findOrFail(1)
   }
 
   public async store({ request, response }: HttpContextContract) {
     const meterSchema = schema.create({
-      installationDate: schema.date({ format: 'yyyy-MM-dd' }, [
-        rules.unique({ table: 'meters', column: 'installation_date' })
+      serialNumber: schema.string({ trim: true }, [
+        rules.unique({ table: 'meters', column: 'serial_number' })
       ]),
+      installationDate: schema.date({ format: 'yyyy-MM-dd' }),
     })
 
     const payload = await request.validate({ schema: meterSchema })
     const meter: Meter = await Meter.create(payload)
 
-    return response
+    return await response
       .status(201)
       .json(meter)
   }
@@ -38,7 +39,7 @@ export default class MetersController {
     const payload = await request.validate({ schema: metersSchema })
     const circuit: Meter = await Meter.findOrFail(payload.serialNumber)
 
-    return circuit
+    return await circuit
       .merge(payload)
       .save()
   }
@@ -51,6 +52,6 @@ export default class MetersController {
     const payload = await request.validate({ schema: metersSchema })
     const meter: Meter = await Meter.findOrFail(payload.serialNumber)
 
-    return meter.delete()
+    return await meter.delete()
   }
 }
