@@ -26,12 +26,10 @@ export default class Site extends BaseModel {
   public customerId: number
 
   @hasMany(() => Meter, {
-    foreignKey: 'serialNumber',
+    foreignKey: 'siteId',
   })
   public meters: HasMany<typeof Meter>
 
-  @belongsTo(() => Customer, {
-    foreignKey: 'customerId',
-  })
+  @belongsTo(() => Customer)
   public customer: BelongsTo<typeof Customer>
 }

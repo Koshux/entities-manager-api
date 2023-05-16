@@ -18,6 +18,8 @@ export default class Customer extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @hasMany(() => Site)
+  @hasMany(() => Site, {
+    foreignKey: 'customerId',
+  })
   public sites: HasMany<typeof Site>
 }

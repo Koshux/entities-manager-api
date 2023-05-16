@@ -19,7 +19,9 @@ export default class Meter extends BaseModel {
   @column()
   public siteId: number
 
-  @hasMany(() => Circuit)
+  @hasMany(() => Circuit, {
+    foreignKey: 'serialNumber',
+  })
   public circuits: HasMany<typeof Circuit>
 
   @belongsTo(() => Site, {
