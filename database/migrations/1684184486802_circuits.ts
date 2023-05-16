@@ -7,19 +7,28 @@ export default class Circuits extends BaseSchema {
     // if (await this.schema.hasTable(this.tableName)) {
     //   return
     // }
-    this.schema.dropTable(this.tableName)
+    // this.schema.dropTable(this.tableName)
 
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table
-        .integer('serialNumber')
+        .integer('meter_id')
         .unsigned()
-        .references('serial_number')
-        .inTable('meters')
+        .references('meters.id')
+        // .inTable('meters')
         .onDelete('CASCADE')
         .onUpdate('CASCADE')
         .notNullable()
 
+      table
+        .integer('circuit_id')
+        .unsigned()
+        .references('circuits.id')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE')
+        .notNullable()
+
+      table.string('name').notNullable()
       table.timestamp('installation_date').notNullable()
       table.boolean('is_main').notNullable()
 

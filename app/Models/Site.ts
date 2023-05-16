@@ -2,10 +2,14 @@ import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, HasMany, HasOne, belongsTo, column, hasMany, hasOne } from '@ioc:Adonis/Lucid/Orm'
 import Meter from './Meter'
 import Customer from './Customer'
+import Circuit from './Circuit'
 
 export default class Site extends BaseModel {
   @column({ isPrimary: true })
   public id: number
+
+  @column()
+  public name: string
 
   @column()
   public coordinates: string
@@ -25,9 +29,7 @@ export default class Site extends BaseModel {
   @column()
   public customerId: number
 
-  @hasMany(() => Meter, {
-    localKey: 'siteId',
-  })
+  @hasMany(() => Meter)
   public meters: HasMany<typeof Meter>
 
   @belongsTo(() => Customer)

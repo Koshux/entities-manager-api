@@ -7,6 +7,9 @@ export default class Customer extends BaseModel {
   public id: number
 
   @column()
+  public name: string
+
+  @column()
   public email: string
 
   @column()
@@ -18,8 +21,6 @@ export default class Customer extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @hasMany(() => Site, {
-    localKey: 'customerId',
-  })
+  @hasMany(() => Site)
   public sites: HasMany<typeof Site>
 }

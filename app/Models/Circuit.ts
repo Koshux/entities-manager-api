@@ -1,10 +1,13 @@
 import { DateTime } from 'luxon'
-import { BaseModel, BelongsTo, belongsTo, column } from '@ioc:Adonis/Lucid/Orm'
+import { BaseModel, BelongsTo, HasManyThrough, belongsTo, column, hasManyThrough } from '@ioc:Adonis/Lucid/Orm'
 import Meter from './Meter'
 
 export default class Circuit extends BaseModel {
   @column({ isPrimary: true })
   public id: number
+
+  @column()
+  public name: string
 
   @column.dateTime()
   public installationDate: DateTime
@@ -20,6 +23,9 @@ export default class Circuit extends BaseModel {
 
   @column()
   public serialNumber: string
+
+  @hasManyThrough([() => Circuit, () => Meter])
+  public circuits: HasManyThrough<typeof Circuit>
 
   @belongsTo(() => Meter)
   public circuit: BelongsTo<typeof Meter>

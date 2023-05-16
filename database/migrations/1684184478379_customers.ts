@@ -7,10 +7,11 @@ export default class Customers extends BaseSchema {
     // if (await this.schema.hasTable(this.tableName)) {
     //   return
     // }
-    this.schema.dropTable(this.tableName)
+    // this.schema.dropTable(this.tableName)
 
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
+      table.string('name').notNullable()
       table.string('email').notNullable()
       table.string('vatNumber').notNullable()
 

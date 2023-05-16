@@ -7,19 +7,20 @@ export default class Sites extends BaseSchema {
     // if (await this.schema.hasTable(this.tableName)) {
     //   return
     // }
-    this.schema.dropTable(this.tableName)
+    // this.schema.dropTable(this.tableName)
 
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table
-        .integer('customerId')
+        .integer('customer_id')
         .unsigned()
-        .references('id')
-        .inTable('customers')
+        .references('customers.id')
+        // .inTable('customers')
         .onDelete('CASCADE')
         .onUpdate('CASCADE')
         .notNullable()
 
+      table.string('name').notNullable()
       table.string('coordinates').notNullable()
       table.string('address').notNullable()
       table.string('post_code').notNullable()

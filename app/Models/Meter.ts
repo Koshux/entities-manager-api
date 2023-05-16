@@ -5,6 +5,12 @@ import Site from './Site'
 
 export default class Meter extends BaseModel {
   @column({ isPrimary: true })
+  public id: number
+
+  @column()
+  public name: string
+
+  @column()
   public serialNumber: string
 
   @column.dateTime()

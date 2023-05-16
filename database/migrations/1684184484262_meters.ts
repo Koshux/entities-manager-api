@@ -7,19 +7,21 @@ export default class Meters extends BaseSchema {
     // if (await this.schema.hasTable(this.tableName)) {
     //   return
     // }
-    this.schema.dropTable(this.tableName)
+    // this.schema.dropTable(this.tableName)
 
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('serial_number')
+      table.increments('id')
       table
         .integer('site_id')
         .unsigned()
-        .references('id')
-        .inTable('sites')
+        .references('sites.id')
+        // .inTable('sites')
         .onDelete('CASCADE')
         .onUpdate('CASCADE')
         .notNullable()
 
+      table.string('name').notNullable()
+      table.string('serialNumber').notNullable()
       table.timestamp('installation_date').notNullable()
 
       /**
