@@ -1,5 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { schema } from '@ioc:Adonis/Core/Validator'
+import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Circuit from 'App/Models/Circuit'
 
 export default class CircuitsController {
@@ -14,7 +14,9 @@ export default class CircuitsController {
 
   public async store({ request, response }: HttpContextContract) {
     const circuitSchema = schema.create({
-      installationDate: schema.date({ format: 'yyyy-MM-dd' }),
+      installationDate: schema.date({ format: 'yyyy-MM-dd' }, [
+        rules.unique({ table: 'circuits', column: 'installation_date' })
+      ]),
       isMain: schema.boolean()
     })
 
@@ -29,7 +31,9 @@ export default class CircuitsController {
   public async update({ request }: HttpContextContract) {
     const circuitSchema = schema.create({
       id: schema.number(),
-      installationDate: schema.date({ format: 'yyyy-MM-dd' }),
+      installationDate: schema.date({ format: 'yyyy-MM-dd' }, [
+        rules.unique({ table: 'circuits', column: 'installation_date' })
+      ]),
       isMain: schema.boolean()
     })
 

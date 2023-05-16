@@ -14,6 +14,7 @@ DONE - Define Controllers to implement the business logic for the routes
 DONE - Define routes for entire schema
 	- GET, POST, PATCH, DELETE on all models
 TODO:
+- Ask Fareed whether the circuit `installation_date` must be unique as well.
 - Fix seeder inserts
 - Add missing relationships:
 	- site to circuit

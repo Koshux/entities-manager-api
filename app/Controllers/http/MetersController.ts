@@ -1,5 +1,5 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { schema } from '@ioc:Adonis/Core/Validator'
+import { schema, rules } from '@ioc:Adonis/Core/Validator'
 import Meter from 'App/Models/Meter'
 
 export default class MetersController {
@@ -14,7 +14,9 @@ export default class MetersController {
 
   public async store({ request, response }: HttpContextContract) {
     const meterSchema = schema.create({
-      installationDate: schema.date({ format: 'yyyy-MM-dd' }),
+      installationDate: schema.date({ format: 'yyyy-MM-dd' }, [
+        rules.unique({ table: 'meters', column: 'installation_date' })
+      ]),
     })
 
     const payload = await request.validate({ schema: meterSchema })
@@ -28,7 +30,9 @@ export default class MetersController {
   public async update({ request }: HttpContextContract) {
     const metersSchema = schema.create({
       serialNumber: schema.string({ trim: true }),
-      installationDate: schema.date({ format: 'yyyy-MM-dd' }),
+      installationDate: schema.date({ format: 'yyyy-MM-dd' }, [
+        rules.unique({ table: 'meters', column: 'installation_date' })
+      ]),
     })
 
     const payload = await request.validate({ schema: metersSchema })
