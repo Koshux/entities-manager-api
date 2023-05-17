@@ -22,16 +22,9 @@ export default class Meter extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
-  @column()
-  public siteId: number
-
-  @hasMany(() => Circuit, {
-    localKey: 'serialNumber',
-  })
+  @hasMany(() => Circuit)
   public circuits: HasMany<typeof Circuit>
 
-  @belongsTo(() => Site, {
-    localKey: 'siteId',
-  })
+  @belongsTo(() => Site)
   public meter: BelongsTo<typeof Site>
 }

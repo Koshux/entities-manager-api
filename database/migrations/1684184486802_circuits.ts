@@ -4,11 +4,6 @@ export default class Circuits extends BaseSchema {
   protected tableName = 'circuits'
 
   public async up () {
-    // if (await this.schema.hasTable(this.tableName)) {
-    //   return
-    // }
-    // this.schema.dropTable(this.tableName)
-
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table

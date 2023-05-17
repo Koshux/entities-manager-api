@@ -1,44 +1,45 @@
 import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
+import Circuit from 'App/Models/Circuit'
 import Customer from 'App/Models/Customer'
+import Meter from 'App/Models/Meter'
+import Site from 'App/Models/Site'
 
 export default class extends BaseSeeder {
   public async run () {
     await Customer.truncate()
-
-    // check if any customers exist
-    const customers = await Customer.all()
-    // log the customers to console
-    console.log('>> hey >>', customers.length)
+    await Site.truncate()
+    await Meter.truncate()
+    await Circuit.truncate()
 
     const customer1 = await Customer.create({
-      name: 'Test',
+      // name: 'Test',
       email: 'test@test.com',
       vatNumber: '123456789',
     })
 
-    // await customer1.related('sites').createMany([{
-    //   name: 'Site 1',
-    //   coordinates: '51.5074, 0.1278',
-    //   address: 'London',
-    //   postCode: 'EC1A 1BB',
-    // }, {
-    //   name: 'Site 2',
-    //   coordinates: '52.4862, 1.8904',
-    //   address: 'Norwich',
-    //   postCode: 'NR1 1AA',
-    // }, {
-    //   name: 'Site 3',
-    //   coordinates: '53.8008, 1.5491',
-    //   address: 'Leeds',
-    //   postCode: 'LS1 1AA',
-    // }])
+    await customer1.related('sites').createMany([{
+      name: 'Site 1',
+      coordinates: '51.5074, 0.1278',
+      address: 'London',
+      postCode: 'EC1A 1BB',
+    }, {
+      name: 'Site 2',
+      coordinates: '52.4862, 1.8904',
+      address: 'Norwich',
+      postCode: 'NR1 1AA',
+    }, {
+      name: 'Site 3',
+      coordinates: '53.8008, 1.5491',
+      address: 'Leeds',
+      postCode: 'LS1 1AA',
+    }])
 
-    // const relatedSites1 = customer1.$getRelated('sites')
-    // if (relatedSites1 != null) {
-    //   // Setup the first two sites with their circuits and meters as per spec.
-    //   setupSite1(relatedSites1[0])
-    //   setupSite2(relatedSites1[1])
-    // }
+    const relatedSites1 = customer1.$getRelated('sites')
+    if (relatedSites1 != null) {
+      // Setup the first two sites with their circuits and meters as per spec.
+      setupSite1(relatedSites1[0])
+      setupSite2(relatedSites1[1])
+    }
   }
 }
 
