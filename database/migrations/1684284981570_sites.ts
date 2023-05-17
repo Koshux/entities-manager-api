@@ -1,13 +1,16 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
+import Site from 'App/Models/Site'
 
 export default class Sites extends BaseSchema {
   protected tableName = 'sites'
 
   public async up () {
+    await Site.truncate()
+    this.schema.dropTable(this.tableName)
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table
-        .integer('customer_id')
+        .integer('id')
         .unsigned()
         .references('customers.id')
         // .inTable('customers')

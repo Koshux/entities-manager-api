@@ -1,9 +1,12 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
+import Circuit from 'App/Models/Circuit'
 
 export default class Circuits extends BaseSchema {
   protected tableName = 'circuits'
 
   public async up () {
+    await Circuit.truncate()
+    this.schema.dropTable(this.tableName)
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table

@@ -1,15 +1,21 @@
+import Database from '@ioc:Adonis/Lucid/Database'
 import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
 import Circuit from 'App/Models/Circuit'
 import Customer from 'App/Models/Customer'
 import Meter from 'App/Models/Meter'
 import Site from 'App/Models/Site'
+import { DateTime } from 'luxon'
 
 export default class extends BaseSeeder {
   public async run () {
-    await Customer.truncate()
-    await Site.truncate()
-    await Meter.truncate()
-    await Circuit.truncate()
+    // await Customer.truncate()
+    // await Site.truncate()
+    // await Meter.truncate()
+    // await Circuit.truncate()
+    await Database.raw('TRUNCATE customers CASCADE')
+    await Database.raw('TRUNCATE sites CASCADE')
+    await Database.raw('TRUNCATE meters CASCADE')
+    await Database.raw('TRUNCATE circuits CASCADE')
 
     const customer1 = await Customer.create({
       // name: 'Test',
@@ -21,17 +27,17 @@ export default class extends BaseSeeder {
       name: 'Site 1',
       coordinates: '51.5074, 0.1278',
       address: 'London',
-      postCode: 'EC1A 1BB',
+      postCode: 'EC1A 1BB'
     }, {
       name: 'Site 2',
       coordinates: '52.4862, 1.8904',
       address: 'Norwich',
-      postCode: 'NR1 1AA',
+      postCode: 'NR1 1AA'
     }, {
       name: 'Site 3',
       coordinates: '53.8008, 1.5491',
       address: 'Leeds',
-      postCode: 'LS1 1AA',
+      postCode: 'LS1 1AA'
     }])
 
     const relatedSites1 = customer1.$getRelated('sites')

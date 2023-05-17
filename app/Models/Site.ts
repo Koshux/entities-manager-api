@@ -26,6 +26,9 @@ export default class Site extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
+  @column()
+  public customerId: number
+
   @hasMany(() => Meter)
   public meters: HasMany<typeof Meter>
 
