@@ -5,8 +5,9 @@ export default class Meters extends BaseSchema {
   protected tableName = 'meters'
 
   public async up () {
-    await Meter.truncate()
-    this.schema.dropTable(this.tableName)
+    // await Meter.truncate()
+    console.log('Creating meters table', this.tableName)
+    // this.schema.dropTable(this.tableName)
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table
@@ -19,7 +20,7 @@ export default class Meters extends BaseSchema {
         .notNullable()
 
       table.string('name').notNullable()
-      table.string('serialNumber').notNullable()
+      table.string('serial_number').unique().notNullable()
       table.timestamp('installation_date').notNullable()
 
       /**

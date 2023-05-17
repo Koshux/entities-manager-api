@@ -21,6 +21,12 @@ export default class Circuit extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
+  @column()
+  public meterId: number
+
+  @column()
+  public circuitId: number
+
   @hasManyThrough([() => Circuit, () => Meter])
   public circuits: HasManyThrough<typeof Circuit>
 

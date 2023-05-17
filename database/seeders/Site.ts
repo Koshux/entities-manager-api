@@ -1,10 +1,12 @@
-import Database from '@ioc:Adonis/Lucid/Database'
+// import Database from '@ioc:Adonis/Lucid/Database'
 import BaseSeeder from '@ioc:Adonis/Lucid/Seeder'
 import Circuit from 'App/Models/Circuit'
 import Customer from 'App/Models/Customer'
-import Meter from 'App/Models/Meter'
-import Site from 'App/Models/Site'
 import { DateTime } from 'luxon'
+// import Meter from 'App/Models/Meter'
+import Site from 'App/Models/Site'
+import Meter from 'App/Models/Meter'
+// import { DateTime } from 'luxon'
 
 export default class extends BaseSeeder {
   public async run () {
@@ -12,18 +14,18 @@ export default class extends BaseSeeder {
     // await Site.truncate()
     // await Meter.truncate()
     // await Circuit.truncate()
-    await Database.raw('TRUNCATE customers CASCADE')
-    await Database.raw('TRUNCATE sites CASCADE')
-    await Database.raw('TRUNCATE meters CASCADE')
-    await Database.raw('TRUNCATE circuits CASCADE')
+    // await Database.raw('TRUNCATE customers CASCADE')
+    // await Database.raw('TRUNCATE sites CASCADE')
+    // await Database.raw('TRUNCATE meters CASCADE')
+    // await Database.raw('TRUNCATE circuits CASCADE')
 
     const customer1 = await Customer.create({
-      // name: 'Test',
+      name: 'Test',
       email: 'test@test.com',
       vatNumber: '123456789',
     })
 
-    await customer1.related('sites').createMany([{
+    const sites = await customer1.related('sites').createMany([{
       name: 'Site 1',
       coordinates: '51.5074, 0.1278',
       address: 'London',
@@ -40,79 +42,111 @@ export default class extends BaseSeeder {
       postCode: 'LS1 1AA'
     }])
 
-    const relatedSites1 = customer1.$getRelated('sites')
-    if (relatedSites1 != null) {
+    // const relatedSites1 = customer1.related('sites')
+    // console.log('sites', sites)
+    // console.log('Customer 1', customer1)
+    if (sites.length > 0) {
       // Setup the first two sites with their circuits and meters as per spec.
-      setupSite1(relatedSites1[0])
-      setupSite2(relatedSites1[1])
+      await setupSite1(sites[0])
+      // setupSite2(sites[1])
     }
   }
 }
 
 async function setupSite1 (site) {
-  await site[0].$getRelated('meters').createMany([{
-    name: 'Meter 1.1',
+  const meter1 = await Meter.create({
+    name: 'ASD Meter 1.1',
     serialNumber: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-    installationDate: new Date(),
-  }, {
-    name: 'Meter 1.2',
-    serialNumber: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-    installationDate: new Date(),
-  }])
+    installationDate: DateTime.now(),
+    siteId: site.id,
+  })
 
-  // Get the related meters to sites1 and set the related circuits to the first meter
-  const relatedMetersToSites1 = await site[0].$getRelated('meters')
-  await relatedMetersToSites1[0].$setRelated('circuits', [{
+  await Meter.create({
+    name: 'ASD Meter 1.2',
+    serialNumber: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+    installationDate: DateTime.now(),
+    siteId: site.id
+  })
+
+  // const meters = await site.related('meters').createMany([meter1, meter2])
+
+  console.log('YAS')
+
+  const circuit1 = await Circuit.create({
     name: 'Circuit 1.1.1',
-    installationDate: new Date(),
+    installationDate: DateTime.now(),
     isMain: true,
-  }, {
+    meterId: meter1.id,
+  })
+
+  await Circuit.create({
     name: 'Circuit 1.1.2',
-    installationDate: new Date(),
+    installationDate: DateTime.now(),
     isMain: false,
-  }, {
+    meterId: meter1.id,
+  })
+
+  await Circuit.create({
     name: 'Circuit 1.1.3',
-    installationDate: new Date(),
+    installationDate: DateTime.now(),
     isMain: false,
-  }, {
+    meterId: meter1.id,
+  })
+
+  await Circuit.create({
     name: 'Circuit 1.1.4',
-    installationDate: new Date(),
+    installationDate: DateTime.now(),
     isMain: false,
-  }, {
+    meterId: meter1.id,
+  })
+
+  await Circuit.create({
+    name: 'Circuit 1.1.4',
+    installationDate: DateTime.now(),
+    isMain: false,
+    meterId: meter1.id,
+  })
+
+  await Circuit.create({
     name: 'Circuit 1.1.5',
-    installationDate: new Date(),
+    installationDate: DateTime.now(),
     isMain: false,
-  }, {
+    meterId: meter1.id,
+  })
+
+  await Circuit.create({
     name: 'Circuit 1.1.6',
-    installationDate: new Date(),
+    installationDate: DateTime.now(),
     isMain: false,
-  }])
+    meterId: meter1.id,
+  })
 
-  // Get the related circuits to the first meter and create a new circuit as a child to the Circuit 1.1.1
-  const relatedCircuitsToMeters1 = await relatedMetersToSites1[0].$getRelated('circuits')
-  await relatedCircuitsToMeters1[0].$getRelated('circuits').create({
+  console.log('YAS')
+  await Circuit.create({
     name: 'Circuit 1.1.1.1',
-    installationDate: new Date(),
+    installationDate: DateTime.now(),
     isMain: false,
+    meterId: meter1.id,
+    circuitId: circuit1.id
   })
 }
 
-async function setupSite2 (site) {
-  await site[0].$getRelated('meters').create({
-    name: 'Meter 2.1',
-    serialNumber: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-    installationDate: new Date(),
-  })
+// async function setupSite2 (site) {
+//   await site.related('meters').create({
+//     name: 'Meter 2.1',
+//     serialNumber: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+//     installationDate: DateTime.now(),
+//   })
 
-  // Get the related meters to sites1 and set the related circuits to the first meter
-  const relatedMetersToSites1 = await site[0].$getRelated('meters')
-  await relatedMetersToSites1[0].$setRelated('circuits', [{
-    name: 'Circuit 2.1.1',
-    installationDate: new Date(),
-    isMain: true,
-  }, {
-    name: 'Circuit 2.1.2',
-    installationDate: new Date(),
-    isMain: false,
-  }])
-}
+//   // Get the related meters to sites1 and set the related circuits to the first meter
+//   // const relatedMetersToSites1 = await site.related('meters').related('circuits')
+//   await site.related('meters').related('circuits').createMany([{
+//     name: 'Circuit 2.1.1',
+//     installationDate: DateTime.now(),
+//     isMain: true,
+//   }, {
+//     name: 'Circuit 2.1.2',
+//     installationDate: DateTime.now(),
+//     isMain: false,
+//   }])
+// }

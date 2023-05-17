@@ -1,34 +1,27 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
-import Circuit from 'App/Models/Circuit'
+import Site from 'App/Models/Site'
 
-export default class Circuits extends BaseSchema {
-  protected tableName = 'circuits'
+export default class Sites extends BaseSchema {
+  protected tableName = 'sites'
 
   public async up () {
-    await Circuit.truncate()
-    this.schema.dropTable(this.tableName)
+    console.log('Creating sites table', this.tableName)
+    // await Site.truncate()
+    // this.schema.dropTable(this.tableName)
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table
-        .integer('meter_id')
+        .integer('customer_id')
         .unsigned()
-        .references('meters.id')
-        // .inTable('meters')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE')
-        .notNullable()
-
-      table
-        .integer('circuit_id')
-        .unsigned()
-        .references('circuits.id')
+        .references('customers.id')
         .onDelete('CASCADE')
         .onUpdate('CASCADE')
         .notNullable()
 
       table.string('name').notNullable()
-      table.timestamp('installation_date').notNullable()
-      table.boolean('is_main').notNullable()
+      table.string('coordinates').notNullable()
+      table.string('address').notNullable()
+      table.string('post_code').notNullable()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

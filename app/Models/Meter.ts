@@ -22,6 +22,9 @@ export default class Meter extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
 
+  @column()
+  public siteId: number
+
   @hasMany(() => Circuit)
   public circuits: HasMany<typeof Circuit>
 
