@@ -1,13 +1,9 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
-import Customer from 'App/Models/Customer'
 
 export default class Customers extends BaseSchema {
   protected tableName = 'customers'
 
   public async up () {
-    // await Customer.truncate()
-    // this.schema.dropTable(this.tableName)
-    console.log('Creating customers table', this.tableName)
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
 
@@ -18,8 +14,8 @@ export default class Customers extends BaseSchema {
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
-      table.timestamp('created_at', { useTz: true })
-      table.timestamp('updated_at', { useTz: true })
+      table.timestamp('created_at', { useTz: false })
+      table.timestamp('updated_at', { useTz: false })
     })
   }
 

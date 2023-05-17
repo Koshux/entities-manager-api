@@ -1,13 +1,9 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
-import Meter from 'App/Models/Meter'
 
 export default class Meters extends BaseSchema {
   protected tableName = 'meters'
 
   public async up () {
-    // await Meter.truncate()
-    console.log('Creating meters table', this.tableName)
-    // this.schema.dropTable(this.tableName)
     this.schema.createTable(this.tableName, (table) => {
       table.increments('id')
       table
