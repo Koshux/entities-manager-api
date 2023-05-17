@@ -4,7 +4,7 @@ import Circuit from './Circuit'
 import Site from './Site'
 
 export default class Meter extends BaseModel {
-  @column({ isPrimary: true })
+  @column({ isPrimary: true, serializeAs: 'id' })
   public id: number
 
   @column()

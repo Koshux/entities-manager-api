@@ -3,7 +3,7 @@ import { BaseModel, BelongsTo, HasManyThrough, belongsTo, column, hasManyThrough
 import Meter from './Meter'
 
 export default class Circuit extends BaseModel {
-  @column({ isPrimary: true })
+  @column({ isPrimary: true, serializeAs: 'id' })
   public id: number
 
   @column()

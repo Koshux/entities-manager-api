@@ -2,10 +2,9 @@ import { DateTime } from 'luxon'
 import { BaseModel, BelongsTo, HasMany, HasOne, belongsTo, column, hasMany, hasOne } from '@ioc:Adonis/Lucid/Orm'
 import Meter from './Meter'
 import Customer from './Customer'
-import Circuit from './Circuit'
 
 export default class Site extends BaseModel {
-  @column({ isPrimary: true })
+  @column({ isPrimary: true, serializeAs: 'id' })
   public id: number
 
   @column()
