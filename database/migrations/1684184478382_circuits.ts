@@ -1,26 +1,32 @@
 import BaseSchema from '@ioc:Adonis/Lucid/Schema'
 
-export default class Meters extends BaseSchema {
-  protected tableName = 'meters'
+export default class Circuits extends BaseSchema {
+  protected tableName = 'circuits'
 
   public async up () {
-    // if (await this.schema.hasTable(this.tableName)) {
-    //   return
-    // }
-    this.schema.dropTable(this.tableName)
-
     this.schema.createTable(this.tableName, (table) => {
-      table.increments('serial_number')
+      table.increments('id')
       table
-        .integer('site_id')
+        .integer('meter_id')
         .unsigned()
-        .references('id')
-        .inTable('sites')
+        .references('meters.id')
+        // .inTable('meters')
         .onDelete('CASCADE')
         .onUpdate('CASCADE')
         .notNullable()
 
+      table
+        .integer('circuit_id')
+        .unsigned()
+        .references('circuits.id')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE')
+        .nullable()
+        // .notNullable()
+
+      table.string('name').notNullable()
       table.timestamp('installation_date').notNullable()
+      table.boolean('is_main').notNullable()
 
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

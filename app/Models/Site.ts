@@ -4,8 +4,11 @@ import Meter from './Meter'
 import Customer from './Customer'
 
 export default class Site extends BaseModel {
-  @column({ isPrimary: true })
+  @column({ isPrimary: true, serializeAs: 'id' })
   public id: number
+
+  @column()
+  public name: string
 
   @column()
   public coordinates: string
@@ -25,9 +28,7 @@ export default class Site extends BaseModel {
   @column()
   public customerId: number
 
-  @hasMany(() => Meter, {
-    foreignKey: 'siteId',
-  })
+  @hasMany(() => Meter)
   public meters: HasMany<typeof Meter>
 
   @belongsTo(() => Customer)

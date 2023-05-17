@@ -4,7 +4,13 @@ import Circuit from './Circuit'
 import Site from './Site'
 
 export default class Meter extends BaseModel {
-  @column({ isPrimary: true })
+  @column({ isPrimary: true, serializeAs: 'id' })
+  public id: number
+
+  @column()
+  public name: string
+
+  @column()
   public serialNumber: string
 
   @column.dateTime()
@@ -19,13 +25,9 @@ export default class Meter extends BaseModel {
   @column()
   public siteId: number
 
-  @hasMany(() => Circuit, {
-    foreignKey: 'serialNumber',
-  })
+  @hasMany(() => Circuit)
   public circuits: HasMany<typeof Circuit>
 
-  @belongsTo(() => Site, {
-    foreignKey: 'siteId',
-  })
+  @belongsTo(() => Site)
   public meter: BelongsTo<typeof Site>
 }
