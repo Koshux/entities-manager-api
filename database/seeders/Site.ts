@@ -48,7 +48,7 @@ export default class extends BaseSeeder {
     if (sites.length > 0) {
       // Setup the first two sites with their circuits and meters as per spec.
       await setupSite1(sites[0])
-      // setupSite2(sites[1])
+      await setupSite2(sites[1])
     }
   }
 }
@@ -131,22 +131,25 @@ async function setupSite1 (site) {
   })
 }
 
-// async function setupSite2 (site) {
-//   await site.related('meters').create({
-//     name: 'Meter 2.1',
-//     serialNumber: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
-//     installationDate: DateTime.now(),
-//   })
+async function setupSite2 (site) {
+  const meter2 = await Meter.create({
+    name: 'Meter 2.1',
+    serialNumber: Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15),
+    installationDate: DateTime.now(),
+    siteId: site.id
+  })
 
-//   // Get the related meters to sites1 and set the related circuits to the first meter
-//   // const relatedMetersToSites1 = await site.related('meters').related('circuits')
-//   await site.related('meters').related('circuits').createMany([{
-//     name: 'Circuit 2.1.1',
-//     installationDate: DateTime.now(),
-//     isMain: true,
-//   }, {
-//     name: 'Circuit 2.1.2',
-//     installationDate: DateTime.now(),
-//     isMain: false,
-//   }])
-// }
+  // Get the related meters to sites1 and set the related circuits to the first meter
+  // const relatedMetersToSites1 = await site.related('meters').related('circuits')
+  await Circuit.createMany([{
+    name: 'Circuit 2.1.1',
+    installationDate: DateTime.now(),
+    isMain: true,
+    meterId: meter2.id
+  }, {
+    name: 'Circuit 2.1.2',
+    installationDate: DateTime.now(),
+    isMain: false,
+    meterId: meter2.id
+  }])
+}
