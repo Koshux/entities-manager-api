@@ -24,4 +24,4 @@ Route.group(() => {
   // .middleware({ '*': ['auth'] })
   // Route.resource('profile.sites.meters.circuits.circuits', 'ProfileController')
   //   .apiOnly()
-})
+}).prefix('/v1')
