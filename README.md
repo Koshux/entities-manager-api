@@ -38,6 +38,50 @@ Make sure to replace `mysecretpassword` with a secure password of your choice.
 4. Create a new Postgres database for the project. You can use a tool like [Postico](https://eggerapps.at/postico/) or any other PostgreSQL client.
 5. Update the database configuration in the `.env` file with the appropriate credentials.
 
+## Database Migrations
+AdonisJS provides a migration feature to manage database schema changes. If you make any updates to the database schema or add new migrations, follow these steps to run the migration commands:
+
+1. Ensure that the Docker container with the Postgres database is running.
+2. Open a terminal or command prompt in the project directory.
+3. Run the following command to create a new migration file:
+`node ace make:migration <migration-name>`
+Replace `<migration-name>` with a descriptive name for your migration. This command will create a new migration file in the `database/migrations` directory.
+4. In the newly created migration file, define the schema changes using AdonisJS migration methods. Refer to the AdonisJS documentation for more details on writing migrations.
+5. Once your migration is ready, run the following command to execute the migrations and update the database schema:`node ace migration:run`
+
+This command will apply any pending migrations and update the database schema accordingly.
+
+Remember to always run the migration command whenever you make changes to the database schema to ensure consistency between your codebase and the database.
+
+## Database Seeders
+
+To populate the database with initial data, the project includes seeders that insert dummy data or default records into the database. Follow these steps to run the database seeder command:
+
+1. Ensure that the Docker container with the Postgres database is running.
+2. Open a terminal or command prompt in the project directory.
+3. Run the following command to run the database seeder: `node ace db:seed`
+This command will execute the defined seeders and populate the database with initial data.
+4. Once the seeder command has successfully executed, you can proceed to execute the request collection.
+
+Running the database seeder command is typically useful when you want to have pre-populated data for testing and development purposes. It helps to create a consistent state in the database, ensuring that you have sample records to work with while interacting with the API.
+
+Please note that the seeders provided with the project are specific to the data structure and requirements of the application. If you need to modify or customize the initial data, you can explore and update the seeders located in the appropriate project directory.
+
+Remember to run the database seeder command whenever you need to refresh the data or set up the database with the initial records.
+
+## Relationships
+The API incorporates the following relationships:
+
+- Customer may have many sites.
+- Sites may have many meters.
+- Sites may have many circuits.
+- Meters may have many circuits.
+- Circuits may also have other circuits.
+
+These relationships define the associations between entities in the API. By understanding these relationships, you can efficiently navigate and perform operations on related data. When retrieving or modifying data, consider the relationships between entities to ensure data consistency and integrity.
+
+For more details on how these relationships are implemented and utilized in the API, refer to the API documentation or explore the codebase to understand the data models and their associations.
+
 ## Running the API
 To start the AdonisJS server and run the API, use the following command:
 ```bash
@@ -84,50 +128,6 @@ The API provides the following endpoints:
 These are the primary endpoints exposed by the API for performing CRUD operations on customers, sites, meters, and circuits. Each endpoint supports different HTTP methods (GET, POST, PUT, DELETE) to interact with the corresponding resources.
 
 Please refer to the API documentation or explore the codebase for more details on the request and response structures, query parameters, and authentication/authorization requirements for each endpoint.
-
-## Database Migrations
-AdonisJS provides a migration feature to manage database schema changes. If you make any updates to the database schema or add new migrations, follow these steps to run the migration commands:
-
-1. Ensure that the Docker container with the Postgres database is running.
-2. Open a terminal or command prompt in the project directory.
-3. Run the following command to create a new migration file:
-`node ace make:migration <migration-name>`
-Replace `<migration-name>` with a descriptive name for your migration. This command will create a new migration file in the `database/migrations` directory.
-4. In the newly created migration file, define the schema changes using AdonisJS migration methods. Refer to the AdonisJS documentation for more details on writing migrations.
-5. Once your migration is ready, run the following command to execute the migrations and update the database schema:`node ace migration:run`
-
-This command will apply any pending migrations and update the database schema accordingly.
-
-Remember to always run the migration command whenever you make changes to the database schema to ensure consistency between your codebase and the database.
-
-## Database Seeders
-
-To populate the database with initial data, the project includes seeders that insert dummy data or default records into the database. Follow these steps to run the database seeder command:
-
-1. Ensure that the Docker container with the Postgres database is running.
-2. Open a terminal or command prompt in the project directory.
-3. Run the following command to run the database seeder: `node ace db:seed`
-This command will execute the defined seeders and populate the database with initial data.
-4. Once the seeder command has successfully executed, you can proceed to execute the request collection.
-
-Running the database seeder command is typically useful when you want to have pre-populated data for testing and development purposes. It helps to create a consistent state in the database, ensuring that you have sample records to work with while interacting with the API.
-
-Please note that the seeders provided with the project are specific to the data structure and requirements of the application. If you need to modify or customize the initial data, you can explore and update the seeders located in the appropriate project directory.
-
-Remember to run the database seeder command whenever you need to refresh the data or set up the database with the initial records.
-
-## Relationships
-The API incorporates the following relationships:
-
-- Customer may have many sites.
-- Sites may have many meters.
-- Sites may have many circuits.
-- Meters may have many circuits.
-- Circuits may also have other circuits.
-
-These relationships define the associations between entities in the API. By understanding these relationships, you can efficiently navigate and perform operations on related data. When retrieving or modifying data, consider the relationships between entities to ensure data consistency and integrity.
-
-For more details on how these relationships are implemented and utilized in the API, refer to the API documentation or explore the codebase to understand the data models and their associations.
 
 ## Testing the API
 You can use either Thunder Client or Postman to test the API endpoints and interact with the AdonisJS CRUD API.
