@@ -31,9 +31,7 @@ export default class MetersController {
   public async update({ request }: HttpContextContract) {
     const metersSchema = schema.create({
       serialNumber: schema.string({ trim: true }),
-      installationDate: schema.date({ format: 'yyyy-MM-dd' }, [
-        rules.unique({ table: 'meters', column: 'installation_date' })
-      ]),
+      installationDate: schema.date(),
     })
 
     const payload = await request.validate({ schema: metersSchema })

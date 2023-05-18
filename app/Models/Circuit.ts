@@ -25,7 +25,7 @@ export default class Circuit extends BaseModel {
   public meterId: number
 
   @column()
-  public circuitId: number
+  public circuitId: number | null
 
   @hasManyThrough([() => Circuit, () => Meter])
   public circuits: HasManyThrough<typeof Circuit>

@@ -6,7 +6,6 @@ export default class SitesController {
   public async index({ response }: HttpContextContract) {
     // I would like to return all Profiles
     const all = await Site.all()
-    console.log('all sites:', all)
     return response.json(all)
   }
 

@@ -26,9 +26,7 @@ export default class ProfileController {
       email: schema.string({ trim: true }, [
         rules.email()
       ]),
-      vatNumber: schema.string({ trim: true }, [
-        rules.unique({ table: 'customers', column: 'vat_number' })
-      ])
+      vatNumber: schema.string({ trim: true })
     })
 
     const payload = await request.validate({ schema: customerSchema })
@@ -45,9 +43,7 @@ export default class ProfileController {
       email: schema.string({ trim: true }, [
         rules.email()
       ]),
-      vatNumber: schema.string({ trim: true }, [
-        rules.unique({ table: 'customers', column: 'vat_number' })
-      ])
+      vatNumber: schema.string({ trim: true })
     })
 
     const payload = await request.validate({ schema: customerSchema })
