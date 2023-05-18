@@ -6,7 +6,6 @@ export default class SitesController {
   public async index({ response }: HttpContextContract) {
     // I would like to return all Profiles
     const all = await Site.all()
-    console.log('all sites:', all)
     return response.json(all)
   }
 
@@ -16,6 +15,8 @@ export default class SitesController {
 
   public async store({ request, response }: HttpContextContract) {
     const siteSchema = schema.create({
+      customerId: schema.number(),
+      name: schema.string(),
       coordinates: schema.string({ trim: true }),
       address: schema.string({ trim: true }),
       postCode: schema.string({ trim: true })

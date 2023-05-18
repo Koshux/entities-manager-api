@@ -14,10 +14,12 @@ export default class MetersController {
 
   public async store({ request, response }: HttpContextContract) {
     const meterSchema = schema.create({
+      siteId: schema.number(),
+      name: schema.string(),
       serialNumber: schema.string({ trim: true }, [
         rules.unique({ table: 'meters', column: 'serial_number' })
       ]),
-      installationDate: schema.date({ format: 'yyyy-MM-dd' }),
+      installationDate: schema.date(),
     })
 
     const payload = await request.validate({ schema: meterSchema })
@@ -31,9 +33,7 @@ export default class MetersController {
   public async update({ request }: HttpContextContract) {
     const metersSchema = schema.create({
       serialNumber: schema.string({ trim: true }),
-      installationDate: schema.date({ format: 'yyyy-MM-dd' }, [
-        rules.unique({ table: 'meters', column: 'installation_date' })
-      ]),
+      installationDate: schema.date(),
     })
 
     const payload = await request.validate({ schema: metersSchema })
@@ -46,11 +46,11 @@ export default class MetersController {
 
   public async destroy({ request }: HttpContextContract) {
     const metersSchema = schema.create({
-      serialNumber: schema.string({ trim: true })
+      id: schema.number()
     })
 
     const payload = await request.validate({ schema: metersSchema })
-    const meter: Meter = await Meter.findOrFail(payload.serialNumber)
+    const meter: Meter = await Meter.findOrFail(payload.id)
 
     return await meter.delete()
   }
