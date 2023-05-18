@@ -15,6 +15,8 @@ export default class SitesController {
 
   public async store({ request, response }: HttpContextContract) {
     const siteSchema = schema.create({
+      customerId: schema.number(),
+      name: schema.string(),
       coordinates: schema.string({ trim: true }),
       address: schema.string({ trim: true }),
       postCode: schema.string({ trim: true })
